@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Search, MapPin, DollarSign, Filter } from "lucide-react";
+import { Search, MapPin, DollarSign, Filter, Tag } from "lucide-react";
 import heroImage from "@/assets/hero-house.jpg";
 
 const SearchHero = () => {
   const [searchData, setSearchData] = useState({
     location: "",
     type: "",
-    minPrice: "",
+    status: "",
     maxPrice: "",
   });
 
@@ -35,7 +35,7 @@ const SearchHero = () => {
 
       {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 className="text-4xl md:text-6xl font-poppins font-bold text-white mb-4">
+        <h1 className="mt-12 md:mt-0 text-4xl md:text-6xl font-poppins font-bold text-white mb-4">
           Trouvez votre 
           <span className="block text-accent"> maison idéale</span>
         </h1>
@@ -73,16 +73,18 @@ const SearchHero = () => {
               </select>
             </div>
 
-            {/* Min Price */}
+            {/* Statut du bien */}
             <div className="relative">
-              <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
-              <input
-                type="text"
-                placeholder="Prix min"
-                className="search-input pl-10 w-full"
-                value={searchData.minPrice}
-                onChange={(e) => setSearchData({...searchData, minPrice: e.target.value})}
-              />
+              <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+              <select
+                className="search-input pl-10 w-full appearance-none"
+                value={searchData.status}
+                onChange={(e) => setSearchData({ ...searchData, status: e.target.value })}
+              >
+                <option value="">Statut du bien</option>
+                <option value="À louer">À louer</option>
+                <option value="À vendre">À vendre</option>
+              </select>
             </div>
 
             {/* Max Price */}

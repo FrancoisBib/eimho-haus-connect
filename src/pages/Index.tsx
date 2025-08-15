@@ -3,6 +3,7 @@ import SearchHero from "@/components/SearchHero";
 import PropertySection from "@/components/PropertySection";
 import AdBanner from "@/components/AdBanner";
 import ChatBot from "@/components/ChatBot";
+import Footer from "@/components/Footer";
 
 import { getSections } from "@/data/properties";
 
@@ -37,14 +38,13 @@ const Index = () => {
         properties={housesForSale}
       />
       
-      <AdBanner />
-      
       <PropertySection
-        title="Maisons à louer" 
+        title="Maisons à louer"
         subtitle="Trouvez votre location idéale"
         properties={housesForRent}
       />
-      
+
+
       <PropertySection
         title="Terrains disponibles"
         subtitle="Construisez la maison de vos rêves"
@@ -52,6 +52,8 @@ const Index = () => {
       />
       
       <ChatBot />
+      <AdBanner />
+      <Footer />
     </div>
   );
 };

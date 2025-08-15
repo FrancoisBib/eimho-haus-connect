@@ -1,10 +1,13 @@
-import { Menu, Home, Grid3X3, Heart, User, HelpCircle, FileText, ChevronDown } from "lucide-react";
+import { Menu, Home, Grid3X3, Heart, HelpCircle, ChevronDown, Building2, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
 
@@ -12,9 +15,9 @@ const Navigation = () => {
     { icon: Home, label: "Accueil", href: "/" },
     { icon: Grid3X3, label: "Catégories", href: "/categories" },
     { icon: Heart, label: "Favoris", href: "/favoris" },
-    { icon: User, label: "Mon compte", href: "/compte" },
+    { icon: Building2, label: "Mes biens", href: "/mes-biens" },
     { icon: HelpCircle, label: "FAQ", href: "/faq" },
-    { icon: FileText, label: "CGU", href: "/cgu" },
+    { icon: LogOut, label: "Déconnexion", href: "/deconnexion" },
   ];
 
   return (
@@ -23,30 +26,36 @@ const Navigation = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <h1 className="text-2xl font-poppins font-bold gradient-text">
+            <Link to="/" className="text-2xl font-poppins font-bold gradient-text">
               Eimho
-            </h1>
+            </Link>
           </div>
 
           {/* Desktop & Mobile Dropdown Menu */}
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-2 px-4 py-2 text-foreground hover:text-primary focus:outline-none transition-colors duration-200">
+            <DropdownMenuTrigger className="flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 bg-white/80 text-foreground shadow-sm hover:bg-white hover:text-primary transition-all duration-200">
               <Menu className="h-5 w-5" />
               <span className="text-sm font-medium">Menu</span>
               <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              {menuItems.map((item) => (
-                <DropdownMenuItem key={item.label} asChild>
-                  <a
-                    href={item.href}
-                    className="flex items-center gap-3 px-2 py-2 text-sm font-medium cursor-pointer"
-                  >
-                    <item.icon className="h-4 w-4" />
-                    {item.label}
-                  </a>
-                </DropdownMenuItem>
-              ))}
+            <DropdownMenuContent align="end" className="w-72 p-2 rounded-xl border shadow-xl bg-background/95 backdrop-blur supports-[backdrop-filter]:backdrop-blur-md">
+              <DropdownMenuLabel className="text-xs uppercase tracking-wide text-muted-foreground">Navigation</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <div className="grid grid-cols-1 gap-1">
+                {menuItems.map((item) => (
+                  <DropdownMenuItem key={item.label} asChild>
+                    <a
+                      href={item.href}
+                      className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors hover:bg-accent hover:text-accent-foreground"
+                    >
+                      <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 text-primary">
+                        <item.icon className="h-4 w-4" />
+                      </span>
+                      <span>{item.label}</span>
+                    </a>
+                  </DropdownMenuItem>
+                ))}
+              </div>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

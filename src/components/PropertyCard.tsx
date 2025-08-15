@@ -36,7 +36,7 @@ const PropertyCard = ({
   };
 
   return (
-    <Link to={`/property/${id}`} className="block"><div className="property-card group cursor-pointer">
+    <Link to={`/property/${id}`} className="block h-full"><div className="property-card group cursor-pointer h-full flex flex-col">
       {/* Image Container */}
       <div className="relative h-48 overflow-hidden">
         <img 
@@ -71,7 +71,7 @@ const PropertyCard = ({
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-1">
         {/* Price */}
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-xl font-poppins font-semibold text-primary">
@@ -94,7 +94,7 @@ const PropertyCard = ({
         </div>
 
         {/* Property Details */}
-        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+        <div className="mt-auto flex items-center gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
             <Square className="h-4 w-4" />
             <span>{surface}</span>

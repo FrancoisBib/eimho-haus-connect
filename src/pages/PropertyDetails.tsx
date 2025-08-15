@@ -1,7 +1,11 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getPropertyById } from "@/data/properties";
 import { Button } from "@/components/ui/button";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
+import AdBanner from "@/components/AdBanner";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import {
   Dialog,
   DialogContent,
@@ -41,6 +45,12 @@ import {
   Bed,
   Bath,
   Square,
+  Heart,
+  Share2,
+  Copy,
+  Link as LinkIcon,
+  Mail,
+  MessageCircle,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -74,6 +84,37 @@ const PropertyDetails = () => {
   // Report owner
   const [reportReason, setReportReason] = useState("fraud");
   const [reportOpen, setReportOpen] = useState(false);
+
+  // Favorite / Save
+  const [isFavorite, setIsFavorite] = useState(false);
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("favorites") || "[]";
+      const arr = JSON.parse(raw) as string[];
+      setIsFavorite(arr.includes(property.id));
+    } catch {
+      // ignore parse errors
+    }
+  }, [property.id]);
+
+  // Scroll to top on page mount so details open at the top
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  const toggleFavorite = () => {
+    try {
+      const raw = localStorage.getItem("favorites") || "[]";
+      const arr: string[] = JSON.parse(raw);
+      const exists = arr.includes(property.id);
+      const next = exists ? arr.filter((x) => x !== property.id) : [...arr, property.id];
+      localStorage.setItem("favorites", JSON.stringify(next));
+      setIsFavorite(!exists);
+      toast.success(exists ? "Retiré des favoris" : "Ajouté aux favoris");
+    } catch {
+      setIsFavorite((v) => !v);
+    }
+  };
 
   if (!property) {
     return (
@@ -138,18 +179,54 @@ const PropertyDetails = () => {
     toast.success("Localisation exacte débloquée");
   };
 
+  // Share helpers
+  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+  const shareMessage = `${title} • ${price} • ${location} - ${shareUrl}`;
+
+  const shareNative = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text: `${title} • ${price}`, url: shareUrl });
+      } catch {
+        // user cancelled or unsupported
+      }
+    } else {
+      toast.info("Partage système non disponible");
+    }
+  };
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      toast.success("Lien copié");
+    } catch {
+      toast.error("Impossible de copier le lien");
+    }
+  };
+
+  const openShare = (url: string) => window.open(url, "_blank", "noopener,noreferrer");
+  const shareWhatsApp = () => openShare(`https://wa.me/?text=${encodeURIComponent(shareMessage)}`);
+  const shareTwitter = () =>
+    openShare(
+      `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(
+        `${title} • ${price}`
+      )}`
+    );
+  const shareFacebook = () =>
+    openShare(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`);
+  const shareEmail = () =>
+    openShare(
+      `mailto:?subject=${encodeURIComponent(`À propos: ${title}`)}&body=${encodeURIComponent(shareMessage)}`
+    );
+
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <Navigation />
       <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
-        {/* Breadcrumb / Back */}
-        <div className="mb-4">
-          <Link to="/" className="text-primary hover:underline">
-            ← Retour à l'accueil
-          </Link>
-        </div>
+        
 
         {/* Title and price */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2 mb-4">
+        <div className="w-full lg:max-w-4xl flex flex-col md:flex-row md:items-end md:justify-between gap-2 mb-4">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold font-poppins">
               {title}
@@ -159,11 +236,11 @@ const PropertyDetails = () => {
               <span>{location}</span>
             </div>
           </div>
-          <div className="text-primary text-2xl font-semibold">{price}</div>
+          <div className="text-primary text-2xl font-bold">{price}</div>
         </div>
 
         {/* Image carousel */}
-        <div className="relative">
+        <div className="relative w-full lg:max-w-4xl">
           <Carousel className="w-full">
             <CarouselContent>
               {images.map((src, idx) => (
@@ -178,8 +255,8 @@ const PropertyDetails = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
+            <CarouselPrevious className="left-4 top-1/2 -translate-y-1/2 bg-background/70 hover:bg-background shadow-md" />
+            <CarouselNext className="right-4 top-1/2 -translate-y-1/2 bg-background/70 hover:bg-background shadow-md" />
           </Carousel>
         </div>
 
@@ -345,10 +422,48 @@ const PropertyDetails = () => {
               </DialogFooter>
             </DialogContent>
           </Dialog>
+
+          <Button
+            variant="outline"
+            className={`w-full sm:w-auto ${isFavorite ? "text-red-600 border-red-300" : ""}`}
+            onClick={toggleFavorite}
+          >
+            <Heart className={`h-4 w-4 ${isFavorite ? "fill-current" : ""}`} />{" "}
+            {isFavorite ? "Enregistré" : "Enregistrer"}
+          </Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="w-full sm:w-auto">
+                <Share2 className="h-4 w-4" /> Partager
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuItem onClick={shareNative}>
+                <Share2 className="h-4 w-4 mr-2" /> Partage système
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={shareWhatsApp}>
+                <MessageCircle className="h-4 w-4 mr-2" /> WhatsApp
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={shareFacebook}>
+                <Share2 className="h-4 w-4 mr-2" /> Facebook
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={shareTwitter}>
+                <Share2 className="h-4 w-4 mr-2" /> Twitter
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={shareEmail}>
+                <Mail className="h-4 w-4 mr-2" /> Email
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={copyLink}>
+                <Copy className="h-4 w-4 mr-2" /> Copier le lien
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {/* Owner row with report */}
-        <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border rounded-lg p-4">
+        <div className="mt-4 w-full lg:max-w-4xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border rounded-lg p-4">
           <div>
             <div className="text-sm text-muted-foreground">Propriétaire</div>
             <div className="text-lg font-medium">{ownerName}</div>
@@ -470,6 +585,8 @@ const PropertyDetails = () => {
           </div>
         </div>
       </div>
+      <AdBanner />
+      <Footer />
     </div>
   );
 };
