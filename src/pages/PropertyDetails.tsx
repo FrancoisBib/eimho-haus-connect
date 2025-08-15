@@ -102,6 +102,7 @@ const PropertyDetails = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
+
   const toggleFavorite = () => {
     try {
       const raw = localStorage.getItem("favorites") || "[]";

@@ -4,6 +4,8 @@ import PropertySection from "@/components/PropertySection";
 import AdBanner from "@/components/AdBanner";
 import ChatBot from "@/components/ChatBot";
 import Footer from "@/components/Footer";
+import MtnInlineAd from "@/components/MtnInlineAd";
+import JumiaInlineAd from "@/components/JumiaInlineAd";
 
 import { getSections } from "@/data/properties";
 
@@ -32,17 +34,21 @@ const Index = () => {
       <Navigation />
       <SearchHero />
       
-      <PropertySection 
+      <PropertySection
         title="Maisons à vendre"
         subtitle="Découvrez nos meilleures offres de maisons"
         properties={housesForSale}
       />
+
+      <MtnInlineAd />
       
       <PropertySection
         title="Maisons à louer"
         subtitle="Trouvez votre location idéale"
         properties={housesForRent}
       />
+
+      <JumiaInlineAd />
 
 
       <PropertySection
