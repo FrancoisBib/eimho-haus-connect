@@ -1,5 +1,6 @@
 import { Heart, MapPin, Bed, Bath, Square } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 interface PropertyCardProps {
   id: string;
@@ -35,7 +36,7 @@ const PropertyCard = ({
   };
 
   return (
-    <div className="property-card group cursor-pointer">
+    <Link to={`/property/${id}`} className="block"><div className="property-card group cursor-pointer">
       {/* Image Container */}
       <div className="relative h-48 overflow-hidden">
         <img 
@@ -114,7 +115,7 @@ const PropertyCard = ({
           )}
         </div>
       </div>
-    </div>
+    </div></Link>
   );
 };
 
