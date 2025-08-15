@@ -65,82 +65,98 @@ const Navigation = () => {
 
           {/* Desktop & Mobile Right Controls */}
           {!isAuthenticated ? (
-            <Dialog open={openLogin} onOpenChange={setOpenLogin}>
-              <DialogTrigger asChild>
-                <Button className="px-4 py-2 rounded-full">
-                  Connexion
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Connexion</DialogTitle>
-                  <DialogDescription>
-                    Entrez vos identifiants. Utilisez le mot de passe: <span className="font-medium">demo</span>
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <div className="grid gap-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="vous@exemple.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="password">Mot de passe</Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="demo"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button onClick={onSubmitLogin} disabled={loading}>
-                    {loading ? "Connexion..." : "Se connecter"}
+            <div className="flex items-center gap-4">
+              <Link
+                to="/deposer-une-annonce"
+                className="hidden lg:inline-block text-sm font-medium text-primary hover:underline"
+              >
+                Déposer une annonce
+              </Link>
+              <Dialog open={openLogin} onOpenChange={setOpenLogin}>
+                <DialogTrigger asChild>
+                  <Button className="px-4 py-2 rounded-full">
+                    Connexion
                   </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Connexion</DialogTitle>
+                    <DialogDescription>
+                      Entrez vos identifiants. Utilisez le mot de passe: <span className="font-medium">demo</span>
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="vous@exemple.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="password">Mot de passe</Label>
+                      <Input
+                        id="password"
+                        type="password"
+                        placeholder="demo"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button onClick={onSubmitLogin} disabled={loading}>
+                      {loading ? "Connexion..." : "Se connecter"}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
           ) : (
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 bg-white/80 text-foreground shadow-sm hover:bg-white hover:text-primary transition-all duration-200">
-                <Menu className="h-5 w-5" />
-                <span className="text-sm font-medium">Menu</span>
-                <ChevronDown className="h-4 w-4" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-72 p-2 rounded-xl border shadow-xl bg-background/95 backdrop-blur supports-[backdrop-filter]:backdrop-blur-md">
-                <DropdownMenuLabel className="text-xs tracking-wide text-muted-foreground">{user?.email ?? "Utilisateur"}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <div className="grid grid-cols-1 gap-1">
-                  {menuItems.map((item) => (
-                    <DropdownMenuItem key={item.label} asChild>
-                      <a
-                        href={item.href}
-                        onClick={(e) => {
-                          if (item.label === "Déconnexion") {
-                            e.preventDefault();
-                            logout();
-                            toast.success("Déconnecté");
-                          }
-                        }}
-                        className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors hover:bg-accent hover:text-accent-foreground"
-                      >
-                        <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 text-primary">
-                          <item.icon className="h-4 w-4" />
-                        </span>
-                        <span>{item.label}</span>
-                      </a>
-                    </DropdownMenuItem>
-                  ))}
-                </div>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <div className="flex items-center gap-4">
+              <Link
+                to="/deposer-une-annonce"
+                className="hidden lg:inline-block text-sm font-medium text-primary hover:underline"
+              >
+                Déposer une annonce
+              </Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 bg-white/80 text-foreground shadow-sm hover:bg-white hover:text-primary transition-all duration-200">
+                  <Menu className="h-5 w-5" />
+                  <span className="text-sm font-medium">Menu</span>
+                  <ChevronDown className="h-4 w-4" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-72 p-2 rounded-xl border shadow-xl bg-background/95 backdrop-blur supports-[backdrop-filter]:backdrop-blur-md">
+                  <DropdownMenuLabel className="text-xs tracking-wide text-muted-foreground">{user?.email ?? "Utilisateur"}</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <div className="grid grid-cols-1 gap-1">
+                    {menuItems.map((item) => (
+                      <DropdownMenuItem key={item.label} asChild>
+                        <a
+                          href={item.href}
+                          onClick={(e) => {
+                            if (item.label === "Déconnexion") {
+                              e.preventDefault();
+                              logout();
+                              toast.success("Déconnecté");
+                            }
+                          }}
+                          className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors hover:bg-accent hover:text-accent-foreground"
+                        >
+                          <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 text-primary">
+                            <item.icon className="h-4 w-4" />
+                          </span>
+                          <span>{item.label}</span>
+                        </a>
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           )}
         </div>
 
