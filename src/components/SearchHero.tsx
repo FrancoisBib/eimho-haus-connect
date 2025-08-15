@@ -45,7 +45,7 @@ const SearchHero = () => {
         </p>
 
         {/* Search Bar */}
-        <div className="bg-white rounded-2xl p-6 shadow-large max-w-4xl mx-auto">
+        <div className="bg-white rounded-t-2xl rounded-b-none md:rounded-2xl p-6 shadow-large max-w-4xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
             {/* Location */}
             <div className="relative">
