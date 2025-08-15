@@ -9,39 +9,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useAuth } from "@/context/AuthContext";
-import { useState } from "react";
 import { toast } from "sonner";
 
 const Navigation = () => {
-  const { isAuthenticated, user, login, logout } = useAuth();
-  const [openLogin, setOpenLogin] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const onSubmitLogin = async () => {
-    setLoading(true);
-    const res = await login(email, password);
-    setLoading(false);
-    if (res.ok) {
-      toast.success("Connecté");
-      setOpenLogin(false);
-    } else {
-      toast.error(res.message ?? "Échec de connexion");
-    }
-  };
+  const { isAuthenticated, user, logout } = useAuth();
 
   const menuItems = [
     { icon: Home, label: "Accueil", href: "/" },
@@ -72,48 +44,14 @@ const Navigation = () => {
               >
                 Déposer une annonce
               </Link>
-              <Dialog open={openLogin} onOpenChange={setOpenLogin}>
-                <DialogTrigger asChild>
-                  <Button className="px-4 py-2 rounded-full">
-                    Connexion
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Connexion</DialogTitle>
-                    <DialogDescription>
-                      Entrez vos identifiants. Utilisez le mot de passe: <span className="font-medium">demo</span>
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="space-y-4">
-                    <div className="grid gap-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="vous@exemple.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                    </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="password">Mot de passe</Label>
-                      <Input
-                        id="password"
-                        type="password"
-                        placeholder="demo"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <DialogFooter>
-                    <Button onClick={onSubmitLogin} disabled={loading}>
-                      {loading ? "Connexion..." : "Se connecter"}
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
+              <div className="flex items-center gap-2">
+                <Button asChild variant="outline" className="rounded-full hidden sm:inline-flex">
+                  <Link to="/inscription">S'inscrire</Link>
+                </Button>
+                <Button asChild className="px-4 py-2 rounded-full">
+                  <Link to="/login">Connexion</Link>
+                </Button>
+              </div>
             </div>
           ) : (
             <div className="flex items-center gap-4">
