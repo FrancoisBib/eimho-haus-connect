@@ -9,6 +9,7 @@ import PropertyDetails from "./pages/PropertyDetails";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
+import Listings from "./pages/Listings";
 import { AuthProvider } from "./context/AuthContext";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/inscription" element={<Signup />} />
             <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
+            <Route path="/listings/:category" element={<Listings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

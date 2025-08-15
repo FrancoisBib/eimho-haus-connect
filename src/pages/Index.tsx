@@ -38,6 +38,7 @@ const Index = () => {
         title="Maisons à vendre"
         subtitle="Découvrez nos meilleures offres de maisons"
         properties={housesForSale}
+        seeAllTo="/listings/a-vendre"
       />
 
       <MtnInlineAd />
@@ -46,6 +47,7 @@ const Index = () => {
         title="Maisons à louer"
         subtitle="Trouvez votre location idéale"
         properties={housesForRent}
+        seeAllTo="/listings/a-louer"
       />
 
       <JumiaInlineAd />
@@ -55,6 +57,7 @@ const Index = () => {
         title="Terrains disponibles"
         subtitle="Construisez la maison de vos rêves"
         properties={availableLand}
+        seeAllTo="/listings/terrains"
       />
       
       <ChatBot />

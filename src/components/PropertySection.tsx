@@ -1,9 +1,10 @@
 import PropertyCard from "./PropertyCard";
 import { ChevronRight } from "lucide-react";
-
+import { Link } from "react-router-dom";
 interface PropertySectionProps {
   title: string;
   subtitle: string;
+  seeAllTo?: string;
   properties: Array<{
     id: string;
     image: string;
@@ -18,7 +19,7 @@ interface PropertySectionProps {
   }>;
 }
 
-const PropertySection = ({ title, subtitle, properties }: PropertySectionProps) => {
+const PropertySection = ({ title, subtitle, properties, seeAllTo }: PropertySectionProps) => {
   return (
     <section className="py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -33,10 +34,15 @@ const PropertySection = ({ title, subtitle, properties }: PropertySectionProps) 
             </p>
           </div>
           
-          <button className="hidden md:flex items-center gap-2 text-primary hover:text-primary-glow transition-colors duration-200 font-medium">
-            Voir tout
-            <ChevronRight className="h-4 w-4" />
-          </button>
+          {seeAllTo && (
+            <Link
+              to={seeAllTo}
+              className="hidden md:flex items-center gap-2 text-primary hover:text-primary-glow transition-colors duration-200 font-medium"
+            >
+              Voir tout
+              <ChevronRight className="h-4 w-4" />
+            </Link>
+          )}
         </div>
 
         {/* Properties Grid */}
@@ -50,11 +56,13 @@ const PropertySection = ({ title, subtitle, properties }: PropertySectionProps) 
         </div>
 
         {/* Mobile See More Button */}
-        <div className="mt-8 text-center md:hidden">
-          <button className="btn-hero">
-            Voir plus de biens
-          </button>
-        </div>
+        {seeAllTo && (
+          <div className="mt-8 text-center md:hidden">
+            <Link to={seeAllTo} className="btn-hero inline-flex items-center justify-center">
+              Voir plus de biens
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );
